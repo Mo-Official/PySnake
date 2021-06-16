@@ -1,7 +1,7 @@
 
 # SOURCE: https://medium.com/aigent/makefiles-for-python-and-beyond-5cf28349bf05
 # define the name of the virtual environment directory
-VENV := env
+VENV := venv
 
 # default target, when make executed without arguments
 all: venv
@@ -15,7 +15,7 @@ venv: $(VENV)/bin/activate
 
 run: venv
 	clear
-	python3 Alchemist_Town.py
+	python3 main.py
 
 clean:
 	rm -rf $(VENV)
