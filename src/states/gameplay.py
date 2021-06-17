@@ -12,6 +12,8 @@ import pygame.draw as pgdraw
 import pygame.math as pgmath
 vec2 = pgmath.Vector2
 
+import random
+
 from .base import BaseState
 
 class Gameplay(BaseState):
@@ -24,9 +26,7 @@ class Gameplay(BaseState):
         self.all_food = pgsprite.Group()
 
         self.snake = Player(vec2(64,0))
-        self.foods = [BaseItem((640,640), 100, 1000),
-                        BaseItem((640,0), 100, 1000),
-                        BaseItem((0,640),100, 1000)]
+        self.foods = []
 
         self.last_update = pg.time.get_ticks()
 
@@ -34,7 +34,6 @@ class Gameplay(BaseState):
         self.all_sprites.add(self.foods)
 
         self.all_food.add(self.foods)
-        print("WAHTTAS")
 
 
     def get_event(self, event):
@@ -46,13 +45,37 @@ class Gameplay(BaseState):
 
 
     def update(self, dt):
-        print(self.snake.rect.topleft)
+
+        if self.snake.rect.collidelistall(self.snake.tail_rects):
+            self.persist["death_by"] = "You ate yourself!!"
+            self.done = True
+
         # move the sanke
         self.snake.update()
 
         food_hits = pgsprite.spritecollide(self.snake, self.all_food, True)
         for hit in food_hits:
-            print("Ate something")
+            if self.snake.length > 15:
+                self.snake.speed += 0.1
+            self.snake.length += 1
+
+        if len(self.all_food) == 0:
+            print("OKAY")
+            for _ in range(random.randint(3, 6)):
+                x = max(0, 64*random.randint(0,10))
+                x = min(x, settings.WINDOW_WIDTH)
+
+                y = max(0, 64*random.randint(0,10))
+                y = min(y, settings.WINDOW_HEIGHT)
+
+                food = BaseItem((x, y),100,1000)
+                self.all_food.add(food)
+                self.all_sprites.add(food)
+                print("YAY")
+
+        
+
+        
 
         # check if snake collided with a wall
         snake_rect = self.snake.rect
@@ -60,6 +83,7 @@ class Gameplay(BaseState):
                snake_rect.right > settings.WINDOW_WIDTH or\
                snake_rect.top < 0 or\
                snake_rect.bottom > settings.WINDOW_WIDTH:
+            self.persist["death_by"] = "You hit a wall!!"
             self.done = True
 
 
