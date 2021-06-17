@@ -2,6 +2,7 @@ from src import settings
 from typing import List, Tuple
 
 import pygame as pg
+
 import pygame.sprite as pgsprite
 import pygame.draw as pgdraw
 
@@ -20,10 +21,10 @@ class Player(pgsprite.Sprite):
     """
     dir = "right"
     points = 0
-    length = 1
+    length = 3
     last_move = 0
 
-    speed = 1.
+    speed = 2.
 
 
     def __init__(self, pos) -> None:
@@ -39,16 +40,19 @@ class Player(pgsprite.Sprite):
         self.image.fill(pg.Color("blue"))
         self.rect = self.image.get_rect()
 
+        
+
         # a simple tail
         self.tail_image = pg.Surface((64,64))
-        self.tail_image.fill(pg.Color("green"))
-        self.tail_rect = self.tail_image.get_rect()
-        self.tail_pos = vec2(*pos)
-        self.tail_rect.topleft = self.tail_pos
+        self.tail_image.fill(pg.Color("red"))
+        self.tail_rects = []
         
-        self.pos = pos
+        self.pos : pgmath.Vector2 = pos
         self.rect.topleft = self.pos
         self.movement_vec = vec2(0,0)
+        self.last_move = 0
+
+        self.last_pos = []
 
     def get_key_up(self, event):
         if event.key == pg.K_UP:
@@ -72,11 +76,18 @@ class Player(pgsprite.Sprite):
         if self.dir == "down":
             self.movement_vec = (0, 64)
         
-        self.pos += self.movement_vec
-        self.tail_pos += last_move_vec
 
+        self.last_pos.append(pgmath.Vector2(self.pos))
+        if len(self.last_pos) > self.length:
+            self.last_pos.pop(0)
+
+
+        self.pos += self.movement_vec
         self.rect.topleft = self.pos
-        self.tail_rect.topleft = self.tail_pos
+
+        self.tail_rects = [pg.Rect(pos.x, pos.y, 64, 64) for pos in self.last_pos]
+
+
 
 
     def update(self):
@@ -84,8 +95,9 @@ class Player(pgsprite.Sprite):
         if self.last_move > 60:
             self.move()
             self.last_move = 0
-            
-            
+        
+        
+
 
     def eat(self, food):
         if self.length < 10:
@@ -97,4 +109,5 @@ class Player(pgsprite.Sprite):
 
     def draw(self, surface):
         surface.blit(self.image, self.rect)
-        surface.blit(self.tail_image, self.tail_rect)
+        for rect in self.tail_rects:
+            surface.blit(self.tail_image, rect)
