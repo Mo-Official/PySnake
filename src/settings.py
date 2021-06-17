@@ -1,5 +1,5 @@
 
-CAPTION = "Game Title"
+CAPTION = "PySnake"
 
 FPS = 60
 
