@@ -23,7 +23,7 @@ class BaseItem(pgsprite.Sprite):
     def __init__(self, pos=vec2(640, 640), value= 100, time_active=1000) -> None:
         super().__init__()
         self.image = pg.Surface((64,64))
-        self.image.fill(pg.Color("red"))
+        self.image.fill(pg.Color("green"))
         self.rect = self.image.get_rect()
         self.pos = pos
         self.rect.topleft = self.pos
