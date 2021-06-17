@@ -11,6 +11,10 @@ class GameOver(BaseState):
         instructions_center = (self.screen_rect.center[0], self.screen_rect.center[1] + 50)
         self.instuctions_text = self.instuctions.get_rect(center = instructions_center)
 
+    def startup(self, persistent):
+        
+        return super().startup(persistent)
+
     def get_event(self, event):
         if event.type == pg.QUIT:
             self.quit = True
