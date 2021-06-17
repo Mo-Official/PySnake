@@ -10,6 +10,11 @@ class Splash(BaseState):
         self.next_state = "MENU"
         self.time_active = 0
 
+
+    def get_event(self, event):
+        if event.type == pg.KEYUP:
+            self.done = True
+
     def update(self, dt):
         self.time_active += dt
         if self.time_active >= 5000:
