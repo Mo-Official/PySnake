@@ -37,7 +37,7 @@ class BaseItem(pgsprite.Sprite):
             self.kill()
 
 
-class AppleItem(BaseItem):
+class Food(BaseItem):
     def __init__(self, pos, image) -> None:
         value=200
         time_active=400
