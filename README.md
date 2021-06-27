@@ -15,6 +15,8 @@ Clone the repo and run `make run` in the terminal in the repo root.
 
 This will create a virtual enviroment and install all dependancies.
 
+Run `make clean` to remove the virtual enviroment and all pyc files.
+
 ## Controls
 |Key|Effect|
 |---|------|
