@@ -36,14 +36,14 @@ class Player(pgsprite.Sprite):
                 Default: None
         """
         super().__init__()
-        self.image = pg.Surface((64,64))
+        self.image = pg.Surface((54,54))
         self.image.fill(pg.Color("blue"))
         self.rect = self.image.get_rect()
 
         
 
         # a simple tail
-        self.tail_image = pg.Surface((64,64))
+        self.tail_image = pg.Surface((54,54))
         self.tail_image.fill(pg.Color("red"))
         self.tail_rects = []
         
@@ -85,7 +85,7 @@ class Player(pgsprite.Sprite):
         self.pos += self.movement_vec
         self.rect.topleft = self.pos
 
-        self.tail_rects = [pg.Rect(pos.x, pos.y, 64, 64) for pos in self.last_pos]
+        self.tail_rects = [pg.Rect(pos.x, pos.y, 54, 54) for pos in self.last_pos]
 
 
 
